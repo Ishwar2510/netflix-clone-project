@@ -1,24 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+
+
+import { useEffect, useState } from "react";
+import Homepage from "./Pages/Homepage/Homepage";
+import Login from "./Pages/login/Login";
+import Register from "./Pages/register/Register";
+import Watch from "./Pages/watch/Watch";
+
 
 function App() {
+  const [user,setUsers]=useState([{email:"abc@gmail.com",password:"123456789"}]);
+  const [register,setRegister]=useState(false);
+  const [signin,setSignin]=useState(false);
+  const[verified,setverified]=useState(false);
+  const [watch,setWatch]=useState(false);
+  
+  function restart(){
+    setSignin(false);
+    setverified(false);
+    setRegister(false);
+    setWatch(false);
+
+  }
+  useEffect(()=>{
+    if(verified){
+      
+      setRegister(false);
+      
+    }
+
+  },[verified])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+     
+      
+      {(!signin && !verified && !watch)&&<Register user={user} setRegister={setRegister} setUsers={setUsers} setSignin={setSignin} setverified={setverified} />}
+      {(signin && !verified &&!watch)&& <Login user={user} setverified={setverified}/>}
+      
+   
+       {(verified && !watch) && <Homepage register={register} setWatch={setWatch} restart={restart} />}
+
+       {
+        (watch)?<Watch setWatch={setWatch}/>:null
+       }
+      
+      
+
+    </>
+   
   );
 }
 
